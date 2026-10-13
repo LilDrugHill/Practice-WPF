@@ -11,7 +11,6 @@
 
     <ItemGroup>
       <Folder Include="Infrastructure\" />
-      <Folder Include="Models\" />
       <Folder Include="Services\" />
     </ItemGroup>
 
@@ -26,6 +25,7 @@
     <ItemGroup>
       <PackageReference Include="FontAwesome5" Version="2.1.11" />
       <PackageReference Include="MaterialDesignThemes" Version="5.3.2" />
+      <PackageReference Include="OxyPlot.Wpf" Version="2.2.0" />
     </ItemGroup>
 
 </Project>

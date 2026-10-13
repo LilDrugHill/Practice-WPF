@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 
         xmlns:fa="http://schemas.fontawesome.com/icons/"
+        xmlns:oxy="http://oxyplot.org/wpf"
 
         xmlns:local="clr-namespace:Practice_CORE"
         xmlns:vm="clr-namespace:Practice_CORE.ViewModels"
@@ -64,8 +65,11 @@
                                 </Grid>
 
                         </TabItem>
-                        <TabItem Header="Tab2">
+                        <TabItem Header="Plot">
+                            <Grid>
+                    <oxy:PlotView Model="{Binding PlotModel}"/>
 
+                </Grid>
                         </TabItem>
                 </TabControl>
         </DockPanel>
