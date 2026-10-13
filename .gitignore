@@ -1,0 +1,11 @@
+## ide
+.idea/
+.vs/
+*.DotSettings.user
+
+## claude
+CLAUDE.md
+
+## artifacts
+[Bb]in/
+[Oo]bj/
