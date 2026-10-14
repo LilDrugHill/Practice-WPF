@@ -1,10 +1,12 @@
 using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using Practice_CORE.Infrastructure.Commands;
+using Practice_CORE.Models.Decanat;
 using Practice_CORE.ViewModels.Base;
 
 namespace Practice_CORE.ViewModels;
@@ -35,6 +37,8 @@ internal class MainWindowViewModel : ViewModel
 
     #endregion
 
+    public ObservableCollection<Group> Groups { get; }
+
     public PlotModel PlotModel { get; private set; }
 
 
@@ -46,8 +50,8 @@ internal class MainWindowViewModel : ViewModel
         var ls = new LineSeries();
         for (var x = 0d; x <= 360; x += 0.1d)
         {
-            const double to_rad =  Math.PI / 180;
-            var y = Math.Sin(to_rad * x);
+            const double toRad =  Math.PI / 180;
+            var y = Math.Sin(toRad * x);
 
             ls.Points.Add(new DataPoint(x, y));
         }
@@ -60,6 +64,25 @@ internal class MainWindowViewModel : ViewModel
             Axes = { xAxis, yAxis },
             Series = { ls }
         };
+
+        var studentIndex = 1;
+        var students = Enumerable.Range(1, 20).Select(i => new Student
+        {
+            Name = $"Student{studentIndex}",
+            Surname = $"Surname{studentIndex}",
+            Patronymic = $"Patronymic{studentIndex}",
+
+        });
+
+        var groups = Enumerable.Range(1, 20).Select(i => new Group
+        {
+            Name = $"Group {i}",
+            Students = new ObservableCollection<Student>()
+        })
+
+        Groups = new ObservableCollection<Group>();
+
+
 
     }
 }
