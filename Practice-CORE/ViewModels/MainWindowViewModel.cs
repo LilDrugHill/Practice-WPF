@@ -36,8 +36,39 @@ internal class MainWindowViewModel : ViewModel
     private void CloseApplicationCommandExecute(object? p) => Application.Current.Shutdown();
 
     #endregion
-
+    #region Selected Group : Group - Gr
     public ObservableCollection<Group> Groups { get; }
+    /// <summary>Gr</summary>
+    private Group _selectedGroup;
+    /// <summary>Gr</summary>
+    public Group SelectedGroup
+    {
+        get => _selectedGroup;
+        set => Set(ref _selectedGroup, value);
+    }
+    #endregion
+
+    #region ObjectCollection : IList<object> - Just For Fun
+
+    /// <summary>Just For Fun</summary>
+    private IList<object?> _objectCollection;
+
+    /// <summary>Just For Fun</summary>
+    public IList<object?> ObjectCollection { get; }
+
+    private object _selectedObjectCollection;
+
+    public object? SelectedObjectCollection
+    {
+        get => _selectedObjectCollection;
+        set  => Set(ref _selectedObjectCollection, value);
+    }
+    #endregion
+
+
+
+
+
 
     public PlotModel PlotModel { get; private set; }
 
@@ -70,19 +101,23 @@ internal class MainWindowViewModel : ViewModel
         {
             Name = $"Student{studentIndex}",
             Surname = $"Surname{studentIndex}",
-            Patronymic = $"Patronymic{studentIndex}",
-
+            Patronymic = $"Patronymic{studentIndex++}",
         });
 
         var groups = Enumerable.Range(1, 20).Select(i => new Group
         {
             Name = $"Group {i}",
-            Students = new ObservableCollection<Student>()
-        })
+            Students = new ObservableCollection<Student>(students),
+        });
 
-        Groups = new ObservableCollection<Group>();
+        Groups = new ObservableCollection<Group>(groups);
 
-
-
+        ObjectCollection = new ObservableCollection<object?>()
+        {
+            "Hello World",
+            42,
+            students.First(),
+            Groups[1],
+        };
     }
 }

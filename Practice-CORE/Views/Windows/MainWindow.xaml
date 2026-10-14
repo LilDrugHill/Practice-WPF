@@ -6,71 +6,154 @@
 
         xmlns:fa="http://schemas.fontawesome.com/icons/"
         xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+        xmlns:col="clr-namespace:System.Collections.ObjectModel;assembly=System.ObjectModel"
+
 
         xmlns:local="clr-namespace:Practice_CORE"
         xmlns:vm="clr-namespace:Practice_CORE.ViewModels"
         xmlns:cmd="clr-namespace:Practice_CORE.Infrastructure.Commands"
+        xmlns:decanat="clr-namespace:Practice_CORE.Models.Decanat"
+
         mc:Ignorable="d"
         Title="{Binding Title}" Height="450" Width="800">
-        <Window.InputBindings>
-                <KeyBinding Modifiers="Control" Key="Q" Command="{Binding CloseApplicationCommand}"></KeyBinding>
-        </Window.InputBindings>
-        <Window.DataContext>
-                <vm:MainWindowViewModel/>
-        </Window.DataContext>
-        <Window.Resources>
-                <cmd:CloseApplicationCommand x:Key="CloseApplicationCommand" />
-        </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Control" Key="Q" Command="{Binding CloseApplicationCommand}"></KeyBinding>
+    </Window.InputBindings>
+    
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
+    
+    <Window.Resources>
+        <cmd:CloseApplicationCommand x:Key="CloseApplicationCommand" />
+    </Window.Resources>
+    
         <DockPanel>
                 <Menu DockPanel.Dock="Top" Height="15">
-                        <MenuItem Header="File" Height="15"  HorizontalAlignment="Left">
-                                <!-- <MenuItem Header="Exit" Command="{Binding CloseApplicationCommand}"></MenuItem> -->
-                                <MenuItem Header="Exit" Command="{StaticResource CloseApplicationCommand}"></MenuItem>
-                                <MenuItem Header="Exit">
-                                        <!-- <MenuItem.Command> -->
-                                        <!--         <cmd:CloseApplicationCommand/> -->
-                                        <!-- </MenuItem.Command> -->
-                                </MenuItem>
-                        </MenuItem>
-                        <MenuItem Header="Edit" Height="15" HorizontalAlignment="Left"></MenuItem>
+            <MenuItem Header="File" Height="15"  HorizontalAlignment="Left">
+                <!-- <MenuItem Header="Exit" Command="{Binding CloseApplicationCommand}"></MenuItem> -->
+                <MenuItem Header="Exit" Command="{StaticResource CloseApplicationCommand}"></MenuItem>
+                <MenuItem Header="Exit">
+                    <!-- <MenuItem.Command> -->
+                    <!--         <cmd:CloseApplicationCommand/> -->
+                    <!-- </MenuItem.Command> -->
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="Edit" Height="15" HorizontalAlignment="Left"></MenuItem>
                 </Menu>
                 <StatusBar DockPanel.Dock="Bottom" Height="15">
-                        <StatusBarItem>
-                                <TextBlock Text="Ready" FontSize="5" />
+            <StatusBarItem>
+                <TextBlock Text="Ready" FontSize="5" />
                         </StatusBarItem>
-                        <StatusBarItem>
-                                <ProgressBar Width="100" Height="7"></ProgressBar>
-                        </StatusBarItem>
-                </StatusBar>
-                <TabControl>
-                        <TabItem>
-                                <TabItem.Header>
+            <StatusBarItem>
+                <ProgressBar Width="100" Height="7"></ProgressBar>
+            </StatusBarItem>
+        </StatusBar>
+        <TabControl>
+            
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Students"/>
+                        <fa:ImageAwesome Icon="Regular_File" Height="15" Margin="10,0,0,0"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" MaxWidth="250"/>
+                        <ColumnDefinition Width="5*"/>
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Header="Groups" Grid.Column="0" >
+                        <ListBox ItemsSource="{Binding Groups}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedGroup}" SelectedIndex='0'/>
+                    </GroupBox>
+                    <GroupBox Grid.Column="1">
+                        <GroupBox.Header>
+                            <TextBox Text="{Binding SelectedGroup.Name, StringFormat='\{0} students', FallbackValue='Group unselected', TargetNullValue='Unnamed Group'}"/>
+                        </GroupBox.Header>
+                        <DataGrid ItemsSource="{Binding SelectedGroup.Students}" 
+                                  AutoGenerateColumns="False" 
+                                  IsReadOnly="False"
+                                  GridLinesVisibility="Vertical"
+                                  VerticalGridLinesBrush="DarkGray"
+                                  AlternatingRowBackground="LightGray">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Surname" Binding="{Binding Surname}" Width="Auto" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Name" Binding="{Binding Name}"  IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Patronymic" Binding="{Binding Patronymic}"  IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Rating" Binding="{Binding Rating}"  IsReadOnly="True"/>
+                                <!-- <DataGridTextColumn Header="Birth" Binding="{Binding Birthday, StringFormat=dd.MM.yyyy}"/> -->
+                                <DataGridTemplateColumn Header="Birth">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate DataType="{x:Type decanat:Student}">
+                                            <TextBlock Text="{Binding Birthday, StringFormat='dd.MM.yyyy'}"></TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate DataType="{x:Type decanat:Student}" >
+                                            <DatePicker SelectedDate="{Binding Birthday}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <!-- <DataGridTextColumn Header="Group" Binding="{Binding DataContext.SelectedGroup.Name, RelativeSource={RelativeSource AncestorType=DataGrid}}"/> -->
+                                <DataGridTextColumn Header="Description" Binding="{Binding Description }" Width="*" />
+                            </DataGrid.Columns>
 
-                                        <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="Tab 1"/>
-                                                <fa:ImageAwesome Icon="Regular_File" Height="15" Margin="10,0,0,0"/>
-                                        </StackPanel>
-                                </TabItem.Header>
-
-                                <Grid>
-                                        <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
-                                                <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                                <RowDefinition Height="*" />
-                                                <RowDefinition Height="*" />
-                                        </Grid.RowDefinitions>
-                                        <Rectangle Grid.Row="0" Grid.Column="0" Fill="Aqua"></Rectangle>
-                                </Grid>
-
-                        </TabItem>
-                        <TabItem Header="Plot">
-                            <Grid>
-                    <oxy:PlotView Model="{Binding PlotModel}"/>
-
+                        </DataGrid>
+                    </GroupBox>
                 </Grid>
-                        </TabItem>
-                </TabControl>
-        </DockPanel>
+                
+            </TabItem>
+            <TabItem Header="Plot">
+                <Grid>
+                    <oxy:PlotView Model="{Binding PlotModel}"/>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Objects Collection">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" MaxWidth="250"/>
+                        <ColumnDefinition Width="5*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Resources>
+                        <DataTemplate DataType="{x:Type decanat:Student}">
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type sys:String}">
+                            <TextBlock>
+                                <Run FontStyle="Oblique" FontSize="15" FontWeight="Bold" Foreground="Red" Background="Aqua" Text="String: "/>
+                                <Run Text="{Binding Mode=OneWay}"/>
+                            </TextBlock>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type decanat:Group}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Name, StringFormat=' ({0}) '}"/>
+                                <TextBlock Text="{Binding Students.Count}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type sys:Int32}">
+                            <StackPanel Orientation="Horizontal">
+                                  <TextBlock Text="{Binding Mode=OneWay}"/>
+                            </StackPanel>
+                        </DataTemplat>
+                    </Grid.Resources>
+                    
+                    <GroupBox Grid.Column="0">
+                        <GroupBox.Header>
+                            <TextBlock Text="{Binding ObjectCollection.Count, StringFormat=' Coll  {0}'}"/>
+                        </GroupBox.Header>
+                        <ListBox ItemsSource="{Binding ObjectCollection}" SelectedItem="{Binding SelectedObjectCollection}" SelectedIndex="3"/>
+                    </GroupBox>
+
+                    <GroupBox Grid.Column="1">
+
+                        <ContentControl Content="{Binding SelectedObjectCollection}"/>
+                    </GroupBox>
+                    
+                </Grid>
+                
+            </TabItem>
+        </TabControl>
+    </DockPanel>
 </Window>
